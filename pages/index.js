@@ -46,19 +46,20 @@ const HomeContent = () => {
       <table>
         <tr>
           <th>Salario</th>
-          {categories.map(c => (<th>{c.category}</th>))}
-          <th>impuesto</th>
-          <th>neto</th>
+          {categories.map(c => (<th key={c.category}>{c.category}</th>))}
+          <th>Impuesto</th>
+          <th>Neto</th>
         </tr>
 
         <tr>
           <td>{salary}</td>
-          {categories.map((c, i) => (<td style={{ paddingLeft: 12 }}>{c.amount}</td>))}
+          {categories.map((c, i) => (<td key={c.amount} style={{ paddingLeft: 12 }}>{c.amount}</td>))}
           <td> {categories.reduce((z, n) => z + n.amount, 0)}</td>
           <td> {salary - categories.reduce((z, n) => z + n.amount, 0)}</td>
         </tr>
       </table>
 
+      <p style={{ marginTop: 30 }}>v1. Testing</p>
     </div>
   )
 };
