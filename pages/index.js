@@ -32,7 +32,7 @@ const HomeContent = () => {
     <form onSubmit={handleSubmit}>
       <div className="h-screen lg:p-80 flex flex-col justify-center items-center bg-background text-white">
 
-        <h1 className="text-black lg:text-3xl text-lg absolute top-0 mt-20 mb-10 mfont-bold">Calculadora de impuesto de renta</h1>
+        <h1 className="text-black lg:text-3xl text-lg absolute top-0 mt-20 mb-10 font-bold">Calculadora de impuesto de renta</h1>
 
         <div className="flex lg:flex-row flex-col justify-center space-x-5">
           <label className="text-primary text-2xl">₡</label><input type="number" className="w-50 h-12 text-black p-2 rounded-lg drop-shadow-lg" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" onChange={onChange} />
