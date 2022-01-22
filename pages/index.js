@@ -36,7 +36,7 @@ const HomeContent = () => {
 
         <div>
 
-          <div className="flex flex-row justify-center items-center space-x-5 mb-5">
+          <div className="flex flex-row justify-center items-center space-x-2 mb-5">
             <label className="text-primary text-2xl">₡</label>
             <input type="number" className="w-50 h-12 px-2 text-black rounded-lg drop-shadow-lg" onChange={onChange} />
             <button className="h-12 w-30 rounded-lg px-2 self-center text-lg drop-shadow-lg alg bg-primary" onClick={handleSubmit} type='submit'>Calcular</button>
