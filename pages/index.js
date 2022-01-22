@@ -30,9 +30,9 @@ const HomeContent = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="h-screen p-80 flex flex-col justify-center items-center bg-background text-white">
+      <div className="h-screen lg:p-80 flex flex-col justify-center items-center bg-background text-white">
 
-        <h1 className="text-black text-3xl absolute top-0 mt-20 font-bold">Calculadora de impuesto de renta</h1>
+        <h1 className="text-black lg:text-3xl text-lg absolute top-0 mt-20 font-bold">Calculadora de impuesto de renta</h1>
 
         <div className="space-x-5">
           <label className="text-primary text-2xl">₡</label><input type="number" className="w-50 h-12 text-black p-2 rounded-lg drop-shadow-lg" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" onChange={onChange} />
@@ -41,21 +41,43 @@ const HomeContent = () => {
 
 
         {Boolean(result?.taxes) &&
-          <table className="my-10 rounded-lg bg-primary">
+          <table className="my-10 rounded-lg bg-primary overflow-hidden">
             <thead className="m-10">
-              <tr >
-                <th className="p-4 text-center font-bold underline">Salario</th>
-                {result?.applyingTerms.map(c => (<th key={c.category} className="p-4 text-center font-bold underline">{c.category}</th>))}
-                <th className="p-4 text-center font-bold underline">Impuesto</th>
-                <th className="p-4 text-center font-bold underline">Neto</th>
+              <tr>
+                <th className="p-4 text-center font-bold underline hidden md:table-cell">Salario</th>
+                {result?.applyingTerms.map(c => (<th key={c.category} className="p-4 text-center font-bold underline hidden md:table-cell">{c.category}</th>))}
+                <th className="p-4 text-center font-bold underline hidden md:table-cell">Impuesto</th>
+                <th className="p-4 text-center font-bold underline hidden md:table-cell">Neto</th>
               </tr>
+
             </thead>
-            <tbody className="m-10">
-              <tr >
-                <td className="p-4 text-center">{toColon(result?.grossSalary)}</td>
-                {result?.applyingTerms?.map((c, i) => (<td key={c.amount + i} className="p-4 text-center">{c.amount ? toColon(c.amount) : 'N/A'}</td>))}
-                <td className="p-4 text-center"> {toColon(result?.taxes)}</td>
-                <td className="p-4 text-center"> {toColon(result?.netSalary)}</td>
+            <tbody className="m-10 flex-1 md:flex-none">
+              <tr className="flex flex-col flex-no wrap md:table-row">
+
+                <td className="p-4 text-center">
+                  <div className="flex">
+                    <div className="md:hidden font-bold underline mr-10">Salario</div>
+                    {toColon(result?.grossSalary)}
+                  </div>
+                </td>
+                {result?.applyingTerms?.map((c, i) => (<td key={c.amount + i} className="p-4 text-center">
+                  <div className="flex">
+                    <div className="md:hidden font-bold underline mr-10">{c.category}</div>
+                    {c.amount ? toColon(c.amount) : 'N/A'}
+                  </div >
+                </td>))}
+                <td className="p-4 text-center">
+                  <div className="flex">
+                    <div className="md:hidden font-bold underline mr-10">Impuesto</div>
+                    {toColon(result?.taxes)}
+                  </div >
+                </td>
+                <td className="p-4 text-center">
+                  <div className="flex">
+                    <div className="md:hidden font-bold underline mr-10">Neto</div>
+                    {toColon(result?.netSalary)}
+                  </div>
+                </td>
               </tr>
             </tbody>
           </table>
