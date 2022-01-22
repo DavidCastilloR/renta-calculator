@@ -1,11 +1,9 @@
 import { useState } from 'react';
-import styles from '../styles/Home.module.css';
+import { useCalculateRenta } from '../hooks';
+import { toColon } from '../utils';
 
 
 const HomeContent = () => {
-
-  const [salary, setSalary] = useState(0);
-  const [categories, setCategories] = useState([]);
 
   const terms = [
     { inf: 863_000, sup: 1_267_000, percentage: 0.1, category: '10%' },
@@ -14,53 +12,59 @@ const HomeContent = () => {
     { inf: 4_445_000, sup: Infinity, percentage: 0.25, category: '25%' }
   ];
 
+  const calculate = useCalculateRenta({ terms });
+
+  const [inputSalary, setInputSalary] = useState(null);
+
+  const [result, setResult] = useState(null);
+
+
   const onChange = (event) => {
-    setSalary(event.target.value);
+    setInputSalary(event.target.value);
   }
 
-
-  const calculate = () => {
-    let arrCats = []
-    for (const term of terms) {
-      if (salary < term.sup && salary >= term.inf) {
-        arrCats.push({ ...term, amount: (salary - term.inf) * term.percentage });
-        setCategories(arrCats)
-        return;
-      }
-      arrCats.push({ ...term, amount: (term.sup - term.inf) * term.percentage });
-    }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setResult(calculate({ salary: inputSalary }));
   }
-
-
-
-
-
-
 
   return (
-    <div className={styles.container}>
+    <form onSubmit={handleSubmit}>
+      <div className="h-screen p-80 flex flex-col justify-center items-center bg-background text-white">
 
-      <input type="number" onChange={onChange} />
-      <button onClick={calculate}>Calcular</button>
+        <div className="space-x-5">
+          <label className="text-primary text-2xl">₡</label><input type="number" className="w-50 h-12 text-black p-2 rounded-lg drop-shadow-lg" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" onChange={onChange} />
+          <button className="h-12 rounded-lg px-2 text-lg drop-shadow-lg bg-primary" onClick={handleSubmit} type='submit'>Calcular</button>
+        </div>
 
-      <table>
-        <tr>
-          <th>Salario</th>
-          {categories.map(c => (<th key={c.category}>{c.category}</th>))}
-          <th>Impuesto</th>
-          <th>Neto</th>
-        </tr>
 
-        <tr>
-          <td>{salary}</td>
-          {categories.map((c, i) => (<td key={c.amount} style={{ paddingLeft: 12 }}>{c.amount}</td>))}
-          <td> {categories.reduce((z, n) => z + n.amount, 0)}</td>
-          <td> {salary - categories.reduce((z, n) => z + n.amount, 0)}</td>
-        </tr>
-      </table>
+        {Boolean(result?.taxes) &&
+          <table className="my-10 rounded-lg bg-primary">
+            <thead className="m-10">
+              <tr >
+                <th className="p-4 text-center font-bold underline">Salario</th>
+                {result?.applyingTerms.map(c => (<th key={c.category} className="p-4 text-center font-bold underline">{c.category}</th>))}
+                <th className="p-4 text-center font-bold underline">Impuesto</th>
+                <th className="p-4 text-center font-bold underline">Neto</th>
+              </tr>
+            </thead>
+            <tbody className="m-10">
+              <tr >
+                <td className="p-4 text-center">{toColon(result?.grossSalary)}</td>
+                {result?.applyingTerms?.map((c, i) => (<td key={c.amount + i} className="p-4 text-center">{c.amount ? toColon(c.amount) : 'N/A'}</td>))}
+                <td className="p-4 text-center"> {toColon(result?.taxes)}</td>
+                <td className="p-4 text-center"> {toColon(result?.netSalary)}</td>
+              </tr>
+            </tbody>
+          </table>
+        }
+        {result && Boolean(!result.taxes) && <p className="text-2xl text-primary my-10">No aplica</p>}
 
-      <p style={{ marginTop: 30 }}>v1. Testing</p>
-    </div>
+
+
+        <p className="absolute bottom-0">v1.1. Creado por:  <a className="text-primary" href="mailto:me@david-castillo.com">David C.</a></p>
+      </div>
+    </form>
   )
 };
 
