@@ -32,10 +32,10 @@ const HomeContent = () => {
     <form onSubmit={handleSubmit}>
       <div className="h-screen lg:p-80 flex flex-col justify-center items-center bg-background text-white">
 
-        <h1 className="text-black lg:text-3xl text-lg absolute mt-10 lg:mt-20 lg:absolute lg:top-0 mb-10 font-bold">Calculadora de impuesto de renta</h1>
+        <h1 className="text-black lg:text-3xl text-lg mt-10 lg:mt-20 lg:absolute lg:top-0 mb-10 font-bold">Calculadora de impuesto de renta</h1>
 
         <div className="flex lg:flex-row flex-col justify-center space-x-5 space-y-2">
-          <div className="flex"><label className="text-primary text-2xl">₡</label><input type="number" className="w-50 h-12 text-black p-2 rounded-lg drop-shadow-lg" onChange={onChange} /></div>
+          <div className="flex justify-center items-center"><label className="text-primary text-2xl">₡</label><input type="number" className="w-50 h-12 text-black p-2 rounded-lg drop-shadow-lg" onChange={onChange} /></div>
           <button className="h-12 rounded-lg px-2 text-lg drop-shadow-lg bg-primary" onClick={handleSubmit} type='submit'>Calcular</button>
         </div>
 
