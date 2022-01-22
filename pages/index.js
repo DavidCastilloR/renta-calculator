@@ -32,6 +32,8 @@ const HomeContent = () => {
     <form onSubmit={handleSubmit}>
       <div className="h-screen p-80 flex flex-col justify-center items-center bg-background text-white">
 
+        <h1 className="text-black text-3xl absolute top-0 mt-20 font-bold">Calculadora de impuesto de renta</h1>
+
         <div className="space-x-5">
           <label className="text-primary text-2xl">₡</label><input type="number" className="w-50 h-12 text-black p-2 rounded-lg drop-shadow-lg" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" onChange={onChange} />
           <button className="h-12 rounded-lg px-2 text-lg drop-shadow-lg bg-primary" onClick={handleSubmit} type='submit'>Calcular</button>
@@ -62,7 +64,7 @@ const HomeContent = () => {
 
 
 
-        <p className="absolute bottom-0">v1.1. Creado por:  <a className="text-primary" href="mailto:me@david-castillo.com">David C.</a></p>
+        <p className="absolute bottom-0 text-black">v1.1. Creado por:  <a className="text-primary" href="mailto:me@david-castillo.com">David C.</a></p>
       </div>
     </form>
   )
