@@ -5,28 +5,188 @@ import { toColon } from "../utils";
 const HomeContent = () => {
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
 
+  const [selectedTaxType, setSelectedTaxType] = useState("salariedAndRetired");
+
   const termsByYear = [
     {
+      //*********2023************
       year: 2023,
-      terms: [
-        { inf: 863_000, sup: 1_267_000, percentage: 0.1, category: "10%" },
-        { inf: 1_267_000, sup: 2_223_000, percentage: 0.15, category: "15%" },
-        { inf: 2_223_000, sup: 4_445_000, percentage: 0.2, category: "20%" },
-        { inf: 4_445_000, sup: Infinity, percentage: 0.25, category: "25%" },
-      ],
+      taxTypes: {
+        // Asalariados, pensionados
+        salariedAndRetired: {
+          terms: [
+            { inf: 941_000, sup: 1_381_000, percentage: 0.1, category: "10%" },
+            {
+              inf: 1_381_000,
+              sup: 2_423_000,
+              percentage: 0.15,
+              category: "15%",
+            },
+            {
+              inf: 2_423_000,
+              sup: 4_845_000,
+              percentage: 0.2,
+              category: "20%",
+            },
+            {
+              inf: 4_845_000,
+              sup: Infinity,
+              percentage: 0.25,
+              category: "25%",
+            },
+          ],
+        },
+        //Fisicas con actividades lucrativas
+        naturalLucrative: {
+          terms: [
+            {
+              inf: 4_181_000,
+              sup: 6_244_000,
+              percentage: 0.1,
+              category: "10%",
+            },
+            {
+              inf: 6_244_000,
+              sup: 10_414_000,
+              percentage: 0.15,
+              category: "15%",
+            },
+            {
+              inf: 10_414_000,
+              sup: 20_872_000,
+              percentage: 0.2,
+              category: "20%",
+            },
+            {
+              inf: 20_872_000,
+              sup: Infinity,
+              percentage: 0.25,
+              category: "25%",
+            },
+          ],
+        },
+        //Juridicas con actividades lucrativas
+        legalLucrative: {
+          terms: [
+            {
+              inf: 0,
+              sup: 5_761_000,
+              percentage: 0.05,
+              category: "5%",
+            },
+            {
+              inf: 5_761_000,
+              sup: 8_643_000,
+              percentage: 0.1,
+              category: "10%",
+            },
+            {
+              inf: 8_643_000,
+              sup: 11_524_000,
+              percentage: 0.15,
+              category: "15%",
+            },
+            {
+              inf: 11_524_000,
+              sup: Infinity,
+              percentage: 0.2,
+              category: "20%",
+            },
+          ],
+        },
+      },
     },
+
+    //*********2022************
     {
       year: 2022,
-      terms: [
-        { inf: 863_000, sup: 1_267_000, percentage: 0.1, category: "10%" },
-        { inf: 1_267_000, sup: 2_223_000, percentage: 0.15, category: "15%" },
-        { inf: 2_223_000, sup: 4_445_000, percentage: 0.2, category: "20%" },
-        { inf: 4_445_000, sup: Infinity, percentage: 0.25, category: "25%" },
-      ],
+      taxTypes: {
+        salariedAndRetired: {
+          terms: [
+            { inf: 863_000, sup: 1_267_000, percentage: 0.1, category: "10%" },
+            {
+              inf: 1_267_000,
+              sup: 2_223_000,
+              percentage: 0.15,
+              category: "15%",
+            },
+            {
+              inf: 2_223_000,
+              sup: 4_445_000,
+              percentage: 0.2,
+              category: "20%",
+            },
+            {
+              inf: 4_445_000,
+              sup: Infinity,
+              percentage: 0.25,
+              category: "25%",
+            },
+          ],
+        },
+        naturalLucrative: {
+          terms: [
+            {
+              inf: 0,
+              sup: 0,
+              percentage: 0,
+              category: "0%",
+            },
+            {
+              inf: 0,
+              sup: 0,
+              percentage: 0,
+              category: "0%",
+            },
+            {
+              inf: 0,
+              sup: 0,
+              percentage: 0,
+              category: "0%",
+            },
+            {
+              inf: 0,
+              sup: 0,
+              percentage: 0,
+              category: "0%",
+            },
+          ],
+        },
+        //Juridicas con actividades lucrativas
+        legalLucrative: {
+          terms: [
+            {
+              inf: 0,
+              sup: 0,
+              percentage: 0,
+              category: "0%",
+            },
+            {
+              inf: 0,
+              sup: 0,
+              percentage: 0,
+              category: "0%",
+            },
+            {
+              inf: 0,
+              sup: 0,
+              percentage: 0,
+              category: "0%",
+            },
+            {
+              inf: 0,
+              sup: 0,
+              percentage: 0,
+              category: "0%",
+            },
+          ],
+        },
+      },
     },
   ];
 
-  const termsToUse = termsByYear.find(({ year }) => year === currentYear);
+  const termsToUse = termsByYear.find(({ year }) => year === currentYear)
+    .taxTypes[selectedTaxType];
 
   const availableYears = termsByYear.map(({ year }) => year);
 
@@ -57,7 +217,7 @@ const HomeContent = () => {
             onChange={(e) => setCurrentYear(Number(e.target.value))}
           >
             {availableYears.map((year) => (
-              <option selected={currentYear} id={year} value={year}>
+              <option selected={year === currentYear} id={year} value={year}>
                 {year}
               </option>
             ))}
@@ -65,6 +225,36 @@ const HomeContent = () => {
         </h1>
 
         <div>
+          <div className="mb-5 pl-8 w-full">
+            <select
+              name="taxType"
+              id="taxType"
+              className="bg-white rounded-lg text-primary border-1 border-primary w-full h-12 drop-shadow-lg"
+              onChange={(e) => setSelectedTaxType(e.target.value)}
+            >
+              <option
+                selected={"salariedAndRetired" === selectedTaxType}
+                id="salariedAndRetired"
+                value="salariedAndRetired"
+              >
+                Asalariados, retirados, jubilados
+              </option>
+              <option
+                selected={"naturalLucrative" === selectedTaxType}
+                id="naturalLucrative"
+                value="naturalLucrative"
+              >
+                Persona física con actividad lucrativa
+              </option>
+              <option
+                selected={"legalLucrative" === selectedTaxType}
+                id="legalLucrative"
+                value="legalLucrative"
+              >
+                Persona jurídica
+              </option>
+            </select>
+          </div>
           <div className="flex flex-row justify-center items-center space-x-5 mb-5">
             <label className="text-primary text-2xl">₡</label>
             <input
@@ -86,7 +276,7 @@ const HomeContent = () => {
               <thead className="m-10">
                 <tr>
                   <th className="p-4 text-center font-bold underline hidden md:table-cell">
-                    Salario
+                    Monto
                   </th>
                   {result?.applyingTerms.map((c) => (
                     <th
@@ -145,11 +335,11 @@ const HomeContent = () => {
             </table>
           )}
           {result && Boolean(!result.taxes) && (
-            <p className="text-2xl text-primary my-10">No aplica</p>
+            <p className="text-2xl text-primary my-10 text-center">No aplica</p>
           )}
         </div>
 
-        <p className="text-black">v2.0 - {currentYear}</p>
+        <p className="text-black">v2.1 - {new Date().getFullYear()}</p>
       </div>
     </form>
   );
