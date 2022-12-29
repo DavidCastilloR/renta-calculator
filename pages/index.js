@@ -124,31 +124,32 @@ const HomeContent = () => {
             },
           ],
         },
+        //Fisicas con actividades lucrativas
         naturalLucrative: {
           terms: [
             {
-              inf: 0,
-              sup: 0,
-              percentage: 0,
-              category: "0%",
+              inf: 3_742_000,
+              sup: 5_589_000,
+              percentage: 0.1,
+              category: "10%",
             },
             {
-              inf: 0,
-              sup: 0,
-              percentage: 0,
-              category: "0%",
+              inf: 5_589_000,
+              sup: 9_322_000,
+              percentage: 0.15,
+              category: "15%",
             },
             {
-              inf: 0,
-              sup: 0,
-              percentage: 0,
-              category: "0%",
+              inf: 9_322_000,
+              sup: 18_683_000,
+              percentage: 0.2,
+              category: "20%",
             },
             {
-              inf: 0,
-              sup: 0,
-              percentage: 0,
-              category: "0%",
+              inf: 18_683_000,
+              sup: Infinity,
+              percentage: 0.25,
+              category: "25%",
             },
           ],
         },
@@ -157,27 +158,27 @@ const HomeContent = () => {
           terms: [
             {
               inf: 0,
-              sup: 0,
-              percentage: 0,
-              category: "0%",
+              sup: 5_157_000,
+              percentage: 0.05,
+              category: "5%",
             },
             {
-              inf: 0,
-              sup: 0,
-              percentage: 0,
-              category: "0%",
+              inf: 5_157_000,
+              sup: 7_737_000,
+              percentage: 0.1,
+              category: "10%",
             },
             {
-              inf: 0,
-              sup: 0,
-              percentage: 0,
-              category: "0%",
+              inf: 7_737_000,
+              sup: 10_315_000,
+              percentage: 0.15,
+              category: "15%",
             },
             {
-              inf: 0,
-              sup: 0,
-              percentage: 0,
-              category: "0%",
+              inf: 10_315_000,
+              sup: Infinity,
+              percentage: 0.2,
+              category: "20%",
             },
           ],
         },
@@ -230,11 +231,11 @@ const HomeContent = () => {
         </h1>
 
         <div>
-          <div className="mb-5 pl-8 w-full">
+          <div className="flex mb-5 pl-8 w-full justify-center">
             <select
               name="taxType"
               id="taxType"
-              className="bg-white rounded-lg text-primary border-1 border-primary w-full h-12 drop-shadow-lg"
+              className="bg-white rounded-lg text-primary border-1 border-primary w-[294px] h-12 drop-shadow-lg"
               onChange={(e) => setSelectedTaxType(e.target.value)}
             >
               <option
