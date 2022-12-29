@@ -217,7 +217,12 @@ const HomeContent = () => {
             onChange={(e) => setCurrentYear(Number(e.target.value))}
           >
             {availableYears.map((year) => (
-              <option selected={year === currentYear} id={year} value={year}>
+              <option
+                selected={year === currentYear}
+                key={year}
+                id={year}
+                value={year}
+              >
                 {year}
               </option>
             ))}
