@@ -40,25 +40,25 @@ const HomeContent = () => {
         naturalLucrative: {
           terms: [
             {
-              inf: 3_836_000,
-              sup: 5_729_000,
+              inf: 4_181_000,
+              sup: 6_244_000,
               percentage: 0.1,
               category: "10%",
             },
             {
-              inf: 5_729_000,
-              sup: 9_555_000,
+              inf: 6_244_000,
+              sup: 10_414_000,
               percentage: 0.15,
               category: "15%",
             },
             {
-              inf: 9_555_000,
-              sup: 19_150_000,
+              inf: 10_414_000,
+              sup: 20_872_000,
               percentage: 0.2,
               category: "20%",
             },
             {
-              inf: 19_150_000,
+              inf: 20_872_000,
               sup: Infinity,
               percentage: 0.25,
               category: "25%",
