@@ -186,8 +186,9 @@ const HomeContent = () => {
     },
   ];
 
-  const termsToUse = termsByYear.find(({ year }) => year === currentYear)
-    .taxTypes[selectedTaxType];
+  const termsToUse = termsByYear
+    .find(({ year }) => year === currentYear)?.taxTypes[selectedTaxType]
+    ?? termsByYear[0].taxTypes[selectedTaxType];
 
   const availableYears = termsByYear.map(({ year }) => year);
 
