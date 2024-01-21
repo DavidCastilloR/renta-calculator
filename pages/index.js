@@ -9,6 +9,94 @@ const HomeContent = () => {
 
   const termsByYear = [
     {
+      //*********2024************
+      year: 2024,
+      taxTypes: {
+        // Asalariados, pensionados
+        salariedAndRetired: {
+          terms: [
+            { inf: 929_000, sup: 1_363_000, percentage: 0.1, category: "10%" },
+            {
+              inf: 1_363_000,
+              sup: 2_392_000,
+              percentage: 0.15,
+              category: "15%",
+            },
+            {
+              inf: 2_392_000,
+              sup: 4_783_000,
+              percentage: 0.2,
+              category: "20%",
+            },
+            {
+              inf: 4_783_000,
+              sup: Infinity,
+              percentage: 0.25,
+              category: "25%",
+            },
+          ],
+        },
+        //Fisicas con actividades lucrativas
+        naturalLucrative: {
+          terms: [
+            {
+              inf: 4_127_000,
+              sup: 6_164_000,
+              percentage: 0.1,
+              category: "10%",
+            },
+            {
+              inf: 6_164_000,
+              sup: 10_281_000,
+              percentage: 0.15,
+              category: "15%",
+            },
+            {
+              inf: 10_281_000,
+              sup: 20_605_000,
+              percentage: 0.2,
+              category: "20%",
+            },
+            {
+              inf: 20_605_000,
+              sup: Infinity,
+              percentage: 0.25,
+              category: "25%",
+            },
+          ],
+        },
+        //Juridicas con actividades lucrativas
+        legalLucrative: {
+          terms: [
+            {
+              inf: 0,
+              sup: 5_687_000,
+              percentage: 0.05,
+              category: "5%",
+            },
+            {
+              inf: 5_687_000,
+              sup: 8_532_000,
+              percentage: 0.1,
+              category: "10%",
+            },
+            {
+              inf: 8_532_000,
+              sup: 11_376_000,
+              percentage: 0.15,
+              category: "15%",
+            },
+            {
+              inf: 11_376_000,
+              sup: Infinity,
+              percentage: 0.2,
+              category: "20%",
+            },
+          ],
+        },
+      },
+    },
+    {
       //*********2023************
       year: 2023,
       taxTypes: {
