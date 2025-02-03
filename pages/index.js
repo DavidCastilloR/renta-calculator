@@ -9,6 +9,94 @@ const HomeContent = () => {
 
   const termsByYear = [
     {
+      //*********2025************
+      year: 2025,
+      taxTypes: {
+        // Asalariados, pensionados
+        salariedAndRetired: {
+          terms: [
+            { inf: 922_000, sup: 1_352_000, percentage: 0.1, category: "10%" },
+            {
+              inf: 1_352_000,
+              sup: 2_373_000,
+              percentage: 0.15,
+              category: "15%",
+            },
+            {
+              inf: 2_373_000,
+              sup: 4_745_000,
+              percentage: 0.2,
+              category: "20%",
+            },
+            {
+              inf: 4_745_000,
+              sup: Infinity,
+              percentage: 0.25,
+              category: "25%",
+            },
+          ],
+        },
+        //Fisicas con actividades lucrativas
+        naturalLucrative: {
+          terms: [
+            {
+              inf: 4_094_000,
+              sup: 6_115_000,
+              percentage: 0.1,
+              category: "10%",
+            },
+            {
+              inf: 6_115_000,
+              sup: 10_200_000,
+              percentage: 0.15,
+              category: "15%",
+            },
+            {
+              inf: 10_200_000,
+              sup: 20_442_000,
+              percentage: 0.2,
+              category: "20%",
+            },
+            {
+              inf: 20_442_000,
+              sup: Infinity,
+              percentage: 0.25,
+              category: "25%",
+            },
+          ],
+        },
+        //Juridicas con actividades lucrativas
+        legalLucrative: {
+          terms: [
+            {
+              inf: 0,
+              sup: 5_642_000,
+              percentage: 0.05,
+              category: "5%",
+            },
+            {
+              inf: 5_642_000,
+              sup: 8_465_000,
+              percentage: 0.1,
+              category: "10%",
+            },
+            {
+              inf: 8_465_000,
+              sup: 11_286_000,
+              percentage: 0.15,
+              category: "15%",
+            },
+            {
+              inf: 11_286_000,
+              sup: Infinity,
+              percentage: 0.2,
+              category: "20%",
+            },
+          ],
+        },
+      },
+    },
+    {
       //*********2024************
       year: 2024,
       taxTypes: {
@@ -288,6 +376,10 @@ const HomeContent = () => {
 
   const onChange = (event) => {
     setInputSalary(event.target.value);
+
+
+    // onchange calculate
+    setResult(calculate({ salary: event.target.value }));
   };
 
   const handleSubmit = (e) => {
@@ -358,7 +450,7 @@ const HomeContent = () => {
               onChange={onChange}
             />
             <button
-              className="h-12 w-30 rounded-lg px-2 self-center text-lg drop-shadow-lg alg bg-primary"
+              className="hidden h-12 w-30 rounded-lg px-2 self-center text-lg drop-shadow-lg alg bg-primary"
               onClick={handleSubmit}
               type="submit"
             >
@@ -434,7 +526,7 @@ const HomeContent = () => {
           )}
         </div>
 
-        <p className="text-black">v2.2 - {new Date().getFullYear()}</p>
+        <p className="text-black">v3.0 - {new Date().getFullYear()}</p>
       </div>
     </form>
   );
