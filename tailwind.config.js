@@ -3,9 +3,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        background: "#FBF2C0",
-        primary: "#33658A",
-        black: "#1C110A",
+        background: "#7fb069",
+        primary: "#d36135",
+        black: "#FFFFF0",
       },
       screens: {
         sm: "850px",

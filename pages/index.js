@@ -9,6 +9,93 @@ const HomeContent = () => {
 
   const termsByYear = [
     {
+      //*********2026************
+      year: 2026,
+      taxTypes: {
+        // Asalariados, pensionados
+        salariedAndRetired: {
+          terms: [
+            { inf: 918_000, sup: 1_347_000, percentage: 0.1, category: "10%" },
+            {
+              inf: 1_347_000,
+              sup: 2_364_000,
+              percentage: 0.15,
+              category: "15%",
+            },
+            {
+              inf: 2_364_000,
+              sup: 4_727_000,
+              percentage: 0.2,
+              category: "20%",
+            },
+            {
+              inf: 4_727_000,
+              sup: Infinity,
+              percentage: 0.25,
+              category: "25%",
+            },
+          ],
+        },
+        //Fisicas con actividades lucrativas
+        naturalLucrative: {
+          terms: [
+            {
+              inf: 6_244_000,
+              sup: 8_329_000,
+              percentage: 0.1,
+              category: "10%",
+            },
+            {
+              inf: 8_329_000,
+              sup: 10_414_000,
+              percentage: 0.15,
+              category: "15%",
+            },
+            {
+              inf: 10_414_000,
+              sup: 20_872_000,
+              percentage: 0.2,
+              category: "20%",
+            },
+            {
+              inf: 20_872_000,
+              sup: Infinity,
+              percentage: 0.25,
+              category: "25%",
+            },
+          ],
+        },
+        legalLucrative: {
+          terms: [
+            {
+              inf: 0,
+              sup: 5_621_000,
+              percentage: 0.05,
+              category: "5%",
+            },
+            {
+              inf: 5_621_000,
+              sup: 8_433_000,
+              percentage: 0.1,
+              category: "10%",
+            },
+            {
+              inf: 8_433_000,
+              sup: 11_243_000,
+              percentage: 0.15,
+              category: "15%",
+            },
+            {
+              inf: 11_243_000,
+              sup: Infinity,
+              percentage: 0.2,
+              category: "20%",
+            },
+          ],
+        },
+      },
+    },
+    {
       //*********2025************
       year: 2025,
       taxTypes: {
@@ -362,9 +449,10 @@ const HomeContent = () => {
     },
   ];
 
-  const termsToUse = termsByYear
-    .find(({ year }) => year === currentYear)?.taxTypes[selectedTaxType]
-    ?? termsByYear[0].taxTypes[selectedTaxType];
+  const termsToUse =
+    termsByYear.find(({ year }) => year === currentYear)?.taxTypes[
+      selectedTaxType
+    ] ?? termsByYear[0].taxTypes[selectedTaxType];
 
   const availableYears = termsByYear.map(({ year }) => year);
 
@@ -376,7 +464,6 @@ const HomeContent = () => {
 
   const onChange = (event) => {
     setInputSalary(event.target.value);
-
 
     // onchange calculate
     setResult(calculate({ salary: event.target.value }));
