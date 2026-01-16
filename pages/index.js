@@ -533,7 +533,7 @@ const HomeContent = () => {
             <label className="text-primary text-2xl">₡</label>
             <input
               type="number"
-              className="w-50 h-12 px-2 text-black rounded-lg drop-shadow-lg"
+              className="w-50 h-12 px-2 text-primary rounded-lg drop-shadow-lg"
               onChange={onChange}
             />
             <button
