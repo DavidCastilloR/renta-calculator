@@ -7,6 +7,8 @@ const HomeContent = () => {
 
   const [selectedTaxType, setSelectedTaxType] = useState("salariedAndRetired");
 
+  const [activeTab, setActiveTab] = useState("calculator");
+
   const termsByYear = [
     {
       //*********2026************
@@ -460,19 +462,44 @@ const HomeContent = () => {
 
   const [inputSalary, setInputSalary] = useState(null);
 
-  const [result, setResult] = useState(null);
+  const result =
+    inputSalary !== null ? calculate({ salary: inputSalary }) : null;
 
   const onChange = (event) => {
     setInputSalary(event.target.value);
-
-    // onchange calculate
-    setResult(calculate({ salary: event.target.value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setResult(calculate({ salary: inputSalary }));
   };
+
+  const chartYears = [...termsByYear].sort((a, b) => a.year - b.year);
+  const chartTerms = chartYears.map(({ year, taxTypes }) => ({
+    year,
+    terms: taxTypes[selectedTaxType].terms,
+  }));
+  const chartCategories = [
+    ...new Set(chartTerms.flatMap(({ terms }) => terms.map(({ category }) => category))),
+  ];
+  const chartMaximum = Math.max(
+    ...chartTerms.flatMap(({ terms }) => terms.map(({ inf }) => inf))
+  );
+  const chartScaleMaximum = Math.ceil(chartMaximum / 5_000_000) * 5_000_000;
+  const chartWidth = 760;
+  const chartHeight = 320;
+  const plotLeft = 76;
+  const plotRight = 744;
+  const plotTop = 24;
+  const plotBottom = 258;
+  const chartX = (index) =>
+    plotLeft + (index / (chartYears.length - 1)) * (plotRight - plotLeft);
+  const chartY = (amount) =>
+    plotBottom - (amount / chartScaleMaximum) * (plotBottom - plotTop);
+  const chartColors = ["#7b9b70", "#d69a57", "#6388aa", "#ae7a9b"];
+  const formatChartAmount = (amount) =>
+    `₡${(amount / 1_000_000).toLocaleString("es-CR", {
+      maximumFractionDigits: 2,
+    })} M`;
 
   return (
     <main className="page-shell">
@@ -496,6 +523,33 @@ const HomeContent = () => {
           </label>
         </header>
 
+        <nav className="tabs" role="tablist" aria-label="Secciones">
+          <button
+            id="calculator-tab"
+            className={activeTab === "calculator" ? "active" : ""}
+            type="button"
+            role="tab"
+            aria-selected={activeTab === "calculator"}
+            aria-controls="calculator-panel"
+            onClick={() => setActiveTab("calculator")}
+          >
+            Calcular
+          </button>
+          <button
+            id="chart-tab"
+            className={activeTab === "chart" ? "active" : ""}
+            type="button"
+            role="tab"
+            aria-selected={activeTab === "chart"}
+            aria-controls="chart-panel"
+            onClick={() => setActiveTab("chart")}
+          >
+            Variación de tramos
+          </button>
+        </nav>
+
+        {activeTab === "calculator" ? (
+        <div id="calculator-panel" role="tabpanel" aria-labelledby="calculator-tab">
         <div className="form-fields">
           <label className="field" htmlFor="taxType">
             <span>Contribuyente</span>
@@ -577,6 +631,129 @@ const HomeContent = () => {
         )}
         {result && Boolean(!result.taxes) && (
           <p className="no-tax-result" aria-live="polite">No aplica</p>
+        )}
+        </div>
+        ) : (
+          <section
+            id="chart-panel"
+            className="chart-panel"
+            role="tabpanel"
+            aria-labelledby="chart-tab"
+          >
+            <div className="chart-controls">
+              <label className="field" htmlFor="chartTaxType">
+                <span>Contribuyente</span>
+                <select
+                  id="chartTaxType"
+                  value={selectedTaxType}
+                  onChange={(e) => setSelectedTaxType(e.target.value)}
+                >
+                  <option value="salariedAndRetired">
+                    Asalariados, retirados, jubilados
+                  </option>
+                  <option value="naturalLucrative">
+                    Persona física con actividad lucrativa
+                  </option>
+                  <option value="legalLucrative">Persona jurídica</option>
+                </select>
+              </label>
+              <p className="chart-caption">
+                Inicio de cada tasa · colones mensuales
+              </p>
+            </div>
+
+            <div className="chart-scroll">
+              <svg
+                className="bracket-chart"
+                viewBox={`0 0 ${chartWidth} ${chartHeight}`}
+                role="img"
+                aria-label="Variación anual del ingreso donde inicia cada tramo impositivo"
+              >
+                {[0, 1, 2, 3, 4].map((tick) => {
+                  const amount = (chartScaleMaximum / 4) * tick;
+                  const y = chartY(amount);
+                  return (
+                    <g key={tick}>
+                      <line
+                        className="chart-gridline"
+                        x1={plotLeft}
+                        x2={plotRight}
+                        y1={y}
+                        y2={y}
+                      />
+                      <text className="chart-axis-label" x={plotLeft - 10} y={y + 4}>
+                        {formatChartAmount(amount)}
+                      </text>
+                    </g>
+                  );
+                })}
+                {chartYears.map(({ year }, index) => (
+                  <g key={year}>
+                    {year === currentYear && (
+                      <line
+                        className="chart-selected-year"
+                        x1={chartX(index)}
+                        x2={chartX(index)}
+                        y1={plotTop}
+                        y2={plotBottom}
+                      />
+                    )}
+                    <text
+                      className={`chart-year${year === currentYear ? " selected" : ""}`}
+                      x={chartX(index)}
+                      y={plotBottom + 25}
+                    >
+                      {year}
+                    </text>
+                  </g>
+                ))}
+                {chartCategories.map((category, categoryIndex) => {
+                  const points = chartTerms.map(({ year, terms }, index) => {
+                    const threshold = terms.find(
+                      (term) => term.category === category
+                    )?.inf;
+                    return threshold === undefined
+                      ? null
+                      : {
+                          year,
+                          amount: threshold,
+                          x: chartX(index),
+                          y: chartY(threshold),
+                        };
+                  }).filter(Boolean);
+                  return (
+                    <g key={category}>
+                      <polyline
+                        className="chart-series"
+                        points={points.map(({ x, y }) => `${x},${y}`).join(" ")}
+                        stroke={chartColors[categoryIndex % chartColors.length]}
+                      />
+                      {points.map(({ year, amount, x, y }) => (
+                        <circle
+                          key={year}
+                          className="chart-point"
+                          cx={x}
+                          cy={y}
+                          r={year === currentYear ? 5 : 3.5}
+                          fill={chartColors[categoryIndex % chartColors.length]}
+                        >
+                          <title>{`${year} · ${category}: ${toColon(amount)}`}</title>
+                        </circle>
+                      ))}
+                    </g>
+                  );
+                })}
+              </svg>
+            </div>
+            <div className="chart-legend" aria-label="Tasas">
+              {chartCategories.map((category, index) => (
+                <span key={category}>
+                  <i style={{ backgroundColor: chartColors[index % chartColors.length] }} />
+                  {category}
+                </span>
+              ))}
+            </div>
+          </section>
         )}
       </form>
     </main>
