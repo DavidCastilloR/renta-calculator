@@ -475,147 +475,111 @@ const HomeContent = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="h-screen flex flex-col justify-between items-center bg-background text-white">
-        <h1 className="text-black lg:text-3xl text-lg mt-10 mb-10 font-bold">
-          Calculadora de impuesto de renta{" "}
-          <select
-            name="years"
-            id="years"
-            className="bg-background text-primary border-1 border-primary"
-            onChange={(e) => setCurrentYear(Number(e.target.value))}
-          >
-            {availableYears.map((year) => (
-              <option
-                selected={year === currentYear}
-                key={year}
-                id={year}
-                value={year}
-              >
-                {year}
-              </option>
-            ))}
-          </select>
-        </h1>
+    <main className="page-shell">
+      <form className="calculator" onSubmit={handleSubmit}>
+        <header className="calculator-header">
+          <h1>Calculadora de Renta</h1>
+          <label className="year-field" htmlFor="years">
+            <span>Año</span>
+            <select
+              name="years"
+              id="years"
+              value={currentYear}
+              onChange={(e) => setCurrentYear(Number(e.target.value))}
+            >
+              {availableYears.map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+          </label>
+        </header>
 
-        <div>
-          <div className="flex mb-5 pl-8 w-full justify-center">
+        <div className="form-fields">
+          <label className="field" htmlFor="taxType">
+            <span>Contribuyente</span>
             <select
               name="taxType"
               id="taxType"
-              className="bg-white rounded-lg text-primary border-1 border-primary w-[294px] h-12 drop-shadow-lg"
+              value={selectedTaxType}
               onChange={(e) => setSelectedTaxType(e.target.value)}
             >
-              <option
-                selected={"salariedAndRetired" === selectedTaxType}
-                id="salariedAndRetired"
-                value="salariedAndRetired"
-              >
+              <option value="salariedAndRetired">
                 Asalariados, retirados, jubilados
               </option>
-              <option
-                selected={"naturalLucrative" === selectedTaxType}
-                id="naturalLucrative"
-                value="naturalLucrative"
-              >
+              <option value="naturalLucrative">
                 Persona física con actividad lucrativa
               </option>
-              <option
-                selected={"legalLucrative" === selectedTaxType}
-                id="legalLucrative"
-                value="legalLucrative"
-              >
-                Persona jurídica
-              </option>
+              <option value="legalLucrative">Persona jurídica</option>
             </select>
-          </div>
-          <div className="flex flex-row justify-center items-center space-x-5 mb-5">
-            <label className="text-primary text-2xl">₡</label>
-            <input
-              type="number"
-              className="w-50 h-12 px-2 text-primary rounded-lg drop-shadow-lg"
-              onChange={onChange}
-            />
-            <button
-              className="hidden h-12 w-30 rounded-lg px-2 self-center text-lg drop-shadow-lg alg bg-primary"
-              onClick={handleSubmit}
-              type="submit"
-            >
-              Calcular
-            </button>
-          </div>
+          </label>
 
-          {Boolean(result?.taxes) && (
-            <table className="my-2 mx-auto rounded-lg bg-primary overflow-hidden">
-              <thead className="m-10">
-                <tr>
-                  <th className="p-4 text-center font-bold underline hidden md:table-cell">
-                    Monto
-                  </th>
-                  {result?.applyingTerms.map((c) => (
-                    <th
-                      key={c.category}
-                      className="p-4 text-center font-bold underline hidden md:table-cell"
-                    >
-                      {c.category}
-                    </th>
-                  ))}
-                  <th className="p-4 text-center font-bold underline hidden md:table-cell">
-                    Impuesto
-                  </th>
-                  <th className="p-4 text-center font-bold underline hidden md:table-cell">
-                    Neto
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="m-10 flex-1 md:flex-none">
-                <tr className="flex flex-col flex-no wrap md:table-row">
-                  <td className="p-4 text-center">
-                    <div className="flex">
-                      <div className="md:hidden font-bold underline mr-10">
-                        Salario
-                      </div>
-                      {toColon(result?.grossSalary)}
-                    </div>
-                  </td>
-                  {result?.applyingTerms?.map((c, i) => (
-                    <td key={c.amount + i} className="p-4 text-center">
-                      <div className="flex">
-                        <div className="md:hidden font-bold underline mr-10">
-                          {c.category}
-                        </div>
-                        {c.amount ? toColon(c.amount) : "N/A"}
-                      </div>
-                    </td>
-                  ))}
-                  <td className="p-4 text-center">
-                    <div className="flex">
-                      <div className="md:hidden font-bold underline mr-10">
-                        Impuesto
-                      </div>
-                      {toColon(result?.taxes)}
-                    </div>
-                  </td>
-                  <td className="p-4 text-center">
-                    <div className="flex">
-                      <div className="md:hidden font-bold underline mr-10">
-                        Neto
-                      </div>
-                      {toColon(result?.netSalary)}
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          )}
-          {result && Boolean(!result.taxes) && (
-            <p className="text-2xl text-primary my-10 text-center">No aplica</p>
-          )}
+          <label className="field" htmlFor="salary">
+            <span>Ingreso mensual</span>
+            <span className="salary-input">
+              <span aria-hidden="true">₡</span>
+              <input
+                id="salary"
+                type="number"
+                inputMode="numeric"
+                placeholder="0"
+                onChange={onChange}
+              />
+            </span>
+          </label>
         </div>
+        <button className="visually-hidden" type="submit">Calcular</button>
 
-        <p className="text-black">v3.0 - {new Date().getFullYear()}</p>
-      </div>
-    </form>
+        {Boolean(result?.taxes) && (
+          <section className="results" aria-live="polite">
+            <div className="summary">
+              <div>
+                <span>Bruto</span>
+                <strong>{toColon(result?.grossSalary)}</strong>
+              </div>
+              <div>
+                <span>Impuesto</span>
+                <strong>{toColon(result?.taxes)}</strong>
+              </div>
+              <div className="net-result">
+                <span>Neto</span>
+                <strong>{toColon(result?.netSalary)}</strong>
+              </div>
+            </div>
+            <div className="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Monto</th>
+                    {result?.applyingTerms.map((term) => (
+                      <th key={term.category}>{term.category}</th>
+                    ))}
+                    <th>Impuesto</th>
+                    <th>Neto</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{toColon(result?.grossSalary)}</td>
+                    {result?.applyingTerms?.map((term, index) => (
+                      <td key={term.amount + index}>
+                        {term.amount ? toColon(term.amount) : "N/A"}
+                      </td>
+                    ))}
+                    <td>{toColon(result?.taxes)}</td>
+                    <td>{toColon(result?.netSalary)}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        )}
+        {result && Boolean(!result.taxes) && (
+          <p className="no-tax-result" aria-live="polite">No aplica</p>
+        )}
+      </form>
+    </main>
   );
 };
 
